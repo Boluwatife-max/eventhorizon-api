@@ -41,17 +41,13 @@ A RESTful authentication API built with Node.js, Express, MongoDB, and Mongoose.
 
 ### 1. Check API Status
 
-**Request**
-
-`GET /`
+**Request:** `GET /`
 
 Returns a message confirming that the API is running.
 
 ### 2. Register a User
 
-**Request**
-
-`POST /api/auth/register`
+**Request:** `POST /api/auth/register`
 
 Example request body:
 
@@ -67,17 +63,13 @@ The API validates the input, hashes the password, stores the new user, and sends
 
 ### 3. Verify Email
 
-**Request**
-
-`GET /api/auth/verify-email?token=YOUR_VERIFICATION_TOKEN`
+**Request:** `GET /api/auth/verify-email?token=YOUR_VERIFICATION_TOKEN`
 
 The verification token is generated during registration and expires after one hour. Successful verification marks the account as verified and invalidates the token.
 
 ### 4. Log In
 
-**Request**
-
-`POST /api/auth/login`
+**Request:** `POST /api/auth/login`
 
 Example request body:
 
@@ -92,13 +84,13 @@ Only verified users with valid credentials can log in. Successful authentication
 
 ### 5. Get User Profile
 
-**Request**
-
-`GET /api/user/profile`
+**Request:** `GET /api/user/profile`
 
 Include the JWT returned during login in the request header:
 
-`Authorization: Bearer YOUR_JWT_TOKEN`
+```http
+Authorization: Bearer YOUR_JWT_TOKEN
+```
 
 The endpoint returns the authenticated user's profile.
 
@@ -153,7 +145,33 @@ Configure the following variables in your local `.env` file and deployment envir
 | `EMAIL_BRIDGE_URL`      | Google Apps Script web app URL                 |
 | `EMAIL_BRIDGE_SECRET`   | Shared secret used to authorize email requests |
 
-Never commit your `.env` file, database credentials, JWT secret, or email bridge secret to GitHub.
+### Environment Configuration Example
+
+Create a `.env` file in the root directory of the project and add the following variables:
+
+```env
+PORT=4567
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_generated_jwt_secret
+VERIFICATION_BASE_URL=http://localhost:4567
+EMAIL_BRIDGE_URL=your_google_apps_script_web_app_url
+EMAIL_BRIDGE_SECRET=your_configured_email_bridge_secret
+```
+
+Replace the placeholder values with the actual values for your environment.
+
+**Configuration instructions:**
+
+* `PORT`: The port on which the application runs. The application defaults to port `4567` if no port is configured.
+* `MONGO_URI`: Obtain the MongoDB connection string from your database provider. If using MongoDB Atlas, configure database access and network permissions as required.
+* `JWT_SECRET`: Generate a strong, random secret used to sign authentication JWTs. Keep it private.
+* `VERIFICATION_BASE_URL`: Use `http://localhost:4567` during local development and `https://eventhorizon-api-ew2c.onrender.com` in production.
+* `EMAIL_BRIDGE_URL`: Use the deployed Google Apps Script web app URL that handles verification email delivery.
+* `EMAIL_BRIDGE_SECRET`: Use the secret configured for the email bridge. It must match the value expected by the email bridge.
+
+For production deployment, configure these variables in the hosting provider's environment settings. Update `VERIFICATION_BASE_URL` to the production API URL when deploying.
+
+Never publish actual database credentials, JWT secrets, or email bridge secrets in the README or commit the `.env` file to GitHub.
 
 ## Security Considerations
 
@@ -176,7 +194,4 @@ The deployed verification link has triggered a Chrome Safe Browsing warning duri
 
 **Boluwatife Balogun**
 
-GitHub: [Boluwatife-max](https://github.com/Boluwatife-max)
-
----
-
+[GitHub Profile](https://github.com/Boluwatife-max)

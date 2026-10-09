@@ -6,7 +6,8 @@ const router = express.Router();
 
 router.get("/profile", protect, async (req, res) => {
   try {
-    const user = await User.findById(req.user.userId).select("-password");
+    const user = await User.findById(req.user.userId).select("-password -verificationToken -verificationTokenExpires"
+  );
 
     if (!user) {
       return res.status(404).json({

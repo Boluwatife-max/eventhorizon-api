@@ -84,10 +84,10 @@ router.get("/verify-email", async (req, res) => {
       });
     }
 
-    if (user.verificationTokenExpires < new Date()) {
+    if (!user.verificationTokenExpires ||  user.verificationTokenExpires <= new Date() ) {
       return res.status(400).json({
         message: "Verification token has expired",
-      });
+    });
     }
 
   
@@ -106,7 +106,7 @@ router.get("/verify-email", async (req, res) => {
     console.error("Email verification error:", error.message);
 
     res.status(500).json({
-      message: "Server donerror",
+      message: "Server error",
     });
   }
 });
